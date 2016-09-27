@@ -63,18 +63,22 @@ class CronExpression
      *      `@daily` - Run once a day, midnight - 0 0 * * *
      *      `@hourly` - Run once an hour, first minute - 0 * * * *
      * @param FieldFactory $fieldFactory Field factory to use
+     * @param array $mapping Extra mapping to make available
      *
      * @return CronExpression
      */
-    public static function factory($expression, FieldFactory $fieldFactory = null)
+    public static function factory($expression, FieldFactory $fieldFactory = null, $mappings = array())
     {
-        $mappings = array(
-            '@yearly' => '0 0 1 1 *',
-            '@annually' => '0 0 1 1 *',
-            '@monthly' => '0 0 1 * *',
-            '@weekly' => '0 0 * * 0',
-            '@daily' => '0 0 * * *',
-            '@hourly' => '0 * * * *'
+        $mappings = array_merge(
+            array(
+                '@yearly' => '0 0 1 1 *',
+                '@annually' => '0 0 1 1 *',
+                '@monthly' => '0 0 1 * *',
+                '@weekly' => '0 0 * * 0',
+                '@daily' => '0 0 * * *',
+                '@hourly' => '0 * * * *'
+            ),
+            $mappings
         );
 
         if (isset($mappings[$expression])) {
@@ -171,7 +175,7 @@ class CronExpression
     public function setMaxIterationCount($maxIterationCount)
     {
         $this->maxIterationCount = $maxIterationCount;
-        
+
         return $this;
     }
 

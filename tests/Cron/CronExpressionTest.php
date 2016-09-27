@@ -24,6 +24,21 @@ class CronExpressionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Cron\CronExpression::factory
+     */
+    public function testFactoryRecognizesCustomTemplates()
+    {
+        $mapping = array(
+            '@equinox' => '30 4 20 3 *',
+            '@noon' =>  '0 12 * * *',
+            '@daily' =>  '0 6 * * *',
+        );
+        $this->assertEquals('30 4 20 3 *', CronExpression::factory('@equinox', null, $mapping)->getExpression());
+        $this->assertEquals('0 12 * * *', CronExpression::factory('@noon', null, $mapping)->getExpression());
+        $this->assertEquals('0 6 * * *', CronExpression::factory('@daily', null, $mapping)->getExpression());
+    }
+
+    /**
      * @covers Cron\CronExpression::__construct
      * @covers Cron\CronExpression::getExpression
      * @covers Cron\CronExpression::__toString
